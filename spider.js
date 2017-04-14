@@ -11,7 +11,7 @@ var baseUrl;
 var START_URL;
 var SEARCH_WORD1, SEARCH_WORD2;
 var WFILE1, WFILE2;
-var exclude = ['@comment', '?diff', '?oldid', '?direction', '?veaction'];
+var exclude = ['@comment', '?', '#'];
 
 function isInArray(value, array) {
   return array.indexOf(value) > -1;
@@ -46,7 +46,7 @@ var self = module.exports = {
 
         console.log('Iniciado arquivo 1');
       });
-    
+
 
     fs.truncate(WFILE2, 0, (err) => {
         if (err) throw err;
@@ -108,7 +108,7 @@ var self = module.exports = {
       if($(find)[0]){
         var item = $('h1').text();
         var quote = $(find).text();
-        var data = '----\n' + item + '{' + url + '}\n' + quote + '----\n';
+        var data = '----\n' + item + '{' + url + '}\n' + quote + '\n----\n';
 
         fs.appendFile(arq, data, (err) => {
           if (err) throw err;
@@ -126,7 +126,7 @@ var self = module.exports = {
       relativeLinks.each(function() {
           var relurl = baseUrl + $(this).attr('href');
 
-          if(!isInArray(relurl,pagesToVisit) && !containBadLink(relurl)){
+          if(!isInArray(relurl,pagesToVisit) && !containBadLink(relurl) && !(relurl in pagesVisited)){
             pagesToVisit.push(relurl);
           }
       });
