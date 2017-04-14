@@ -9,8 +9,8 @@ var pagesToVisit = [];
 var url;
 var baseUrl;
 var START_URL;
-var SEARCH_WORD;
-var WFILE;
+var SEARCH_WORD1, SEARCH_WORD2;
+var WFILE1, WFILE2;
 var exclude = ['@comment', '?diff', '?oldid', '?direction', '?veaction'];
 
 function isInArray(value, array) {
@@ -29,20 +29,29 @@ function containBadLink(url){
 
 var self = module.exports = {
 
-  init : function(start, search, file){
+  init : function(start, search1, search2, file1, file2){
     START_URL = start;
-    SEARCH_WORD = search;
-    WFILE = file;
+    SEARCH_WORD1 = search1;
+    SEARCH_WORD2 = search2;
+    WFILE1 = file1;
+    WFILE2 = file2;
 
     url = new URL(START_URL);
     baseUrl = url.protocol + "//" + url.hostname;
 
     pagesToVisit.push(START_URL);
 
-    fs.truncate(WFILE, 0, (err) => {
+    fs.truncate(WFILE1, 0, (err) => {
         if (err) throw err;
 
-        console.log('Iniciado');
+        console.log('Iniciado arquivo 1');
+      });
+    
+
+    fs.truncate(WFILE2, 0, (err) => {
+        if (err) throw err;
+
+        console.log('Iniciado arquivo 2');
       });
       
   },
@@ -82,7 +91,8 @@ var self = module.exports = {
        }
        // Parse the document body
        var $ = cheerio.load(body);
-       self.searchForQuote($, SEARCH_WORD, url);
+       self.searchForDiv($, SEARCH_WORD1, url, 'dl', WFILE1);
+       self.searchForDiv($, SEARCH_WORD2, url, 'table.collapsible tr td table.article-table', WFILE2);
 
        self.collectInternalLinks($);
        // In this short program, our callback is just calling crawl()
@@ -91,21 +101,22 @@ var self = module.exports = {
     });
   },
 
-  searchForQuote: function ($, word, url) {
+  searchForDiv: function ($, word, url, find, arq) {
     var bodyText = $('html > body').text().toLowerCase();
     if(bodyText.indexOf(word.toLowerCase()) !== -1){
 
-      if($('dl')[0]){
+      if($(find)[0]){
         var item = $('h1').text();
-        var quote = $('dl').text();
+        var quote = $(find).text();
         var data = '----\n' + item + '{' + url + '}\n' + quote + '----\n';
 
-        fs.appendFile(WFILE, data, (err) => {
+        fs.appendFile(arq, data, (err) => {
           if (err) throw err;
 
-          console.log('Atualizado');
+          console.log('Atualizado arquivo ' + arq);
         });
       }
+      
     }
   },
 
