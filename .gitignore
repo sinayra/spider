@@ -47,9 +47,9 @@ Temporary Items
 .apdisk
 
 # Dependency directories
-node_modules/
-jspm_packages/
-releases
+node/node_modules/
+node/jspm_packages/
+node/releases
 
-description.txt
-dialogue.txt
+node/description.txt
+node/dialogue.txt
