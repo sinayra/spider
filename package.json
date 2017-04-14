@@ -1,0 +1,12 @@
+{
+  "name": "Spider",
+  "version": "0.0.1",
+  "main": "main.js",
+  "repository": "https://github.com/sinayra/spider",
+  "author": "Sinayra Pascoal Cotts Moreira",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "request": "^2.81.0",
+    "url-parse": "^1.1.8"
+  }
+}

@@ -45,3 +45,10 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Dependency directories
+node_modules/
+jspm_packages/
+releases
+
+itens.txt
